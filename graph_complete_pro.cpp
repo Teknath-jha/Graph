@@ -424,9 +424,9 @@ void primsAlgo(int src, int n)
 		}
 	}
 
-	for( int i=0; i<n ; i++)
+	for( int i=1; i<n ; i++)
 	{
-		cout<<parent[i]<<" -> "<<i<<endl;
+		cout<<parent[i]<<" -> "<<key[i]<<" -> "<<i<<endl;
 	}
 }
 
@@ -442,7 +442,7 @@ int main()
 	int edges = 8;
 	int n = vertices + 1;
 
-	addEdge(0, 1, 10);
+	addEdge(0, 1, 100);
 	addEdge(1, 2, 10);
 	addEdge(2, 3, 10);
 	addEdge(0, 3, 40);
@@ -511,6 +511,7 @@ int main()
 */
 
 cout<<"Prim's algo :\n";
+cout<<"from -> wt -> to \n";
 memset(visited,0,sizeof(visited));
 primsAlgo(0,n);
 
