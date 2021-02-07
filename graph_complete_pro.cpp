@@ -306,8 +306,39 @@ void hamiltonianPath(int src, vector<int> &path, int n)
 
 // 11
 // Is Bipartite graph or not 
+bool isBipartitie(int src,int n)
+{
+	vector<int> level(n);
 
+	visited[src]=1;
+	level[src]=0;
 
+	queue<int> q;
+	q.push(src);
+
+	while(!q.empty())
+	{
+		int t = q.front();
+		q.pop();
+
+		for(auto x:adj[t])
+		{
+			if(visited[x.first]==0)
+			{
+				visited[x.first]=1;
+				// storing level to detect even or odd cycle or to predict in else part 
+				//  whether parent and child belongs to same level
+				level[x.first]=level[t]+1;
+				q.push(x.first);
+			}
+			else if(level[t] == level[x.first])
+			{
+				return false;
+			}
+		}
+	}
+	return true ;
+}
 
 
 
@@ -321,15 +352,19 @@ int main()
 	int edges = 8;
 	int n = vertices + 1;
 
-	addEdge(0, 1, 10);
-	addEdge(1, 2, 30);
-	addEdge(2, 3, 10);
-	addEdge(0, 3, 20);
-	addEdge(2, 5, 10);
-	addEdge(3, 4, 40);
-	addEdge(4, 5, 50);
-	addEdge(4, 6, 60);
-	addEdge(5, 6, 70);
+	// addEdge(0, 1, 10);
+	// addEdge(1, 2, 30);
+	// addEdge(2, 3, 10);
+	// addEdge(0, 3, 20);
+	// addEdge(2, 5, 10);
+	// addEdge(3, 4, 40);
+	// addEdge(4, 5, 50);
+	// addEdge(4, 6, 60);
+	// addEdge(5, 6, 70);
+
+
+
+
 	/*   printGraph( 5); 
     
     cout<<"\nBreadth first traversal : \n ";
@@ -355,12 +390,33 @@ int main()
 
 	printAllPathAux(0,4);
 
-*/
 	// Print all Hamiltonian path
 	vector<int> path;
 	memset(visited, 0, sizeof(visited));
 	cout << "Hamiltonian paths are " << endl;
 	hamiltonianPath(0, path, n);
+	cout<<'\n'<<'\n';
+
+
+*/
+	// 11 Tell wheather graph is bipartite or not 
+	// drawn a special bipartite graph
+
+	n=4;
+
+	addEdge(0,1,10);
+	addEdge(0,3,10);
+	addEdge(1,2,10);
+	addEdge(2,3,10);
+
+	memset(visited,0,sizeof(visited));
+	bool check = isBipartitie(0,n);
+	if(check)
+	 	cout<<"Graph is bipartite \n";
+	else 
+		cout<<"Graph is not bipartite \n";
+
+
 
 	cout << '\n'
 		 << '\n'
