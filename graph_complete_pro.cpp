@@ -17,6 +17,7 @@
 9.printing all possible  path from src to dest (9.1 and 9.2)
 10. Hamiltonian path 
 11. Is Bipartite graph or not 
+12. Spread of diseases at time t by pepcode
 
 
 */
@@ -252,26 +253,28 @@ void printAllPathAux(int src, int dest)
 }
 
 //10
-// Hamiltonian path and cycle 
+// Hamiltonian path and cycle
 
 //10.2
-// this function just used to distinguish path and cyle and print it 
+// this function just used to distinguish path and cyle and print it
 void printPath(vector<int> &path)
 {
-	// checking for path and cycle 
+	// checking for path and cycle
 	bool flag = false;
 	for (auto x : adj[path[0]])
 	{
 		if (x.first == path[path.size() - 1])
 		{
-			flag=true;
+			flag = true;
 			break;
 		}
 	}
-	if(flag)
-	cout<<"Hamiltonian Cycle : "<<" ";
-	else 
-	cout<<"Hamiltonian Path  : "<<" ";
+	if (flag)
+		cout << "Hamiltonian Cycle : "
+			 << " ";
+	else
+		cout << "Hamiltonian Path  : "
+			 << " ";
 	for (auto x : path)
 		cout << x << " ";
 
@@ -296,54 +299,88 @@ void hamiltonianPath(int src, vector<int> &path, int n)
 			path.push_back(x.first);
 
 			hamiltonianPath(x.first, path, n);
-// backtrack
+			// backtrack
 			visited[x.first] = 0;
 			path.pop_back();
 		}
 	}
 }
 
-
 // 11
-// Is Bipartite graph or not 
-bool isBipartitie(int src,int n)
+// Is Bipartite graph or not
+bool isBipartitie(int src, int n)
 {
 	vector<int> level(n);
 
-	visited[src]=1;
-	level[src]=0;
+	visited[src] = 1;
+	level[src] = 0;
 
 	queue<int> q;
 	q.push(src);
 
-	while(!q.empty())
+	while (!q.empty())
 	{
 		int t = q.front();
 		q.pop();
 
-		for(auto x:adj[t])
+		for (auto x : adj[t])
 		{
-			if(visited[x.first]==0)
+			if (visited[x.first] == 0)
 			{
-				visited[x.first]=1;
-				// storing level to detect even or odd cycle or to predict in else part 
+				visited[x.first] = 1;
+				// storing level to detect even or odd cycle or to predict in else part
 				//  whether parent and child belongs to same level
-				level[x.first]=level[t]+1;
+				level[x.first] = level[t] + 1;
 				q.push(x.first);
 			}
-			else if(level[t] == level[x.first])
+			else if (level[t] == level[x.first])
 			{
 				return false;
 			}
 		}
 	}
-	return true ;
+	return true;
 }
 
+// 12
+// spread of diseases at time t by pepcode
+int countPatients(int src, int n, int time)
+{
+	if(time==0) return 0;
+	int count = 0;
 
+	visited[src] = 1;
+	count++;
 
+	int level[n];
+	memset(level,0,sizeof(level));
+	level[src] = 1;
 
+	queue<int> q;
+	q.push(src);
+	while (!q.empty())
+	{
+		int t = q.front();
+		q.pop();
 
+		for (auto x : adj[t])
+		{
+			if (level[t] == time)
+			{
+				return count;
+			}
+			// cout<<count<<endl;
+
+			if (visited[x.first] == 0)
+			{
+				level[x.first] = level[t] + 1;
+				visited[x.first] = 1;
+				count++;
+				q.push(x.first);
+			}
+		}
+	}
+}
 
 // Driver code
 int main()
@@ -352,18 +389,15 @@ int main()
 	int edges = 8;
 	int n = vertices + 1;
 
-	// addEdge(0, 1, 10);
-	// addEdge(1, 2, 30);
-	// addEdge(2, 3, 10);
-	// addEdge(0, 3, 20);
+	addEdge(0, 1, 10);
+	addEdge(1, 2, 30);
+	addEdge(2, 3, 10);
+	addEdge(0, 3, 20);
 	// addEdge(2, 5, 10);
-	// addEdge(3, 4, 40);
-	// addEdge(4, 5, 50);
-	// addEdge(4, 6, 60);
-	// addEdge(5, 6, 70);
-
-
-
+	addEdge(3, 4, 40);
+	addEdge(4, 5, 50);
+	addEdge(4, 6, 60);
+	addEdge(5, 6, 70);
 
 	/*   printGraph( 5); 
     
@@ -398,7 +432,7 @@ int main()
 	cout<<'\n'<<'\n';
 
 
-*/
+
 	// 11 Tell wheather graph is bipartite or not 
 	// drawn a special bipartite graph
 
@@ -416,7 +450,9 @@ int main()
 	else 
 		cout<<"Graph is not bipartite \n";
 
+*/
 
+cout<<"No. of effected persons are : "<<countPatients(6,n,3);
 
 	cout << '\n'
 		 << '\n'
