@@ -6,18 +6,20 @@
 
 /*-----------PROGRAMS-------------*/
 /*
-1. Creating a graph via a adjancy list 
-2.print a grap
-3.bfs  iterative
-4.dfs  recursive
+1.  Creating a graph via a adjancy list 
+2.  print a grap
+3.  bfs  iterative
+4.  dfs  recursive
 5.  (5.2)   dfs for counting number of components of graph
-6.dfs iterative 
+6.  dfs iterative 
 7.  (5.1)      count component auxillary function 
-8.Dijkstra's Algo for shortest path 
-9.printing all possible  path from src to dest (9.1 and 9.2)
+8.  Dijkstra's Algo for shortest path 
+9.  Printing all possible  path from src to dest (9.1 and 9.2)
 10. Hamiltonian path 
 11. Is Bipartite graph or not 
 12. Spread of diseases at time t by pepcode
+13. Prim's algo to give minimum no. of wires or cables to setup a lan  so that each pc would connect to other 
+
 
 
 */
@@ -26,6 +28,8 @@
 using namespace std;
 #define MAX 100005
 
+
+typedef pair<int, int> iPair;
 //Adj list    array of vectors of pair
 vector<pair<int, int>> adj[MAX];
 //visited array
@@ -380,7 +384,56 @@ int countPatients(int src, int n, int time)
 			}
 		}
 	}
+	return count;
 }
+
+
+// 13
+// prims algo (minimum wire to setup a lan pepcode)
+// MST minimum spaning tree
+void primsAlgo(int src, int n)
+{
+// minimum prioprity queue 
+	priority_queue<iPair ,vector<iPair>, greater<iPair> > pq;
+
+	vector<int> key(n,INT_MAX);
+
+	vector<int> parent(n,-1);
+
+	pq.push(make_pair(0,src));
+	key[src]=0;
+
+	while(!pq.empty())
+	{	
+		int t = pq.top().second;
+		pq.pop();
+
+		visited[t]=1;
+
+		for(auto x:adj[t])
+		{
+			int v= x.first;
+			int wt=x.second;
+
+			if(visited[v]==0 && key[v] > wt)
+			{	
+				key[v] = wt;
+				pq.push(make_pair(key[v],v));
+				parent[v]=t;
+			}
+		}
+	}
+
+	for( int i=0; i<n ; i++)
+	{
+		cout<<parent[i]<<" -> "<<i<<endl;
+	}
+}
+
+
+
+
+
 
 // Driver code
 int main()
@@ -390,16 +443,16 @@ int main()
 	int n = vertices + 1;
 
 	addEdge(0, 1, 10);
-	addEdge(1, 2, 30);
+	addEdge(1, 2, 10);
 	addEdge(2, 3, 10);
-	addEdge(0, 3, 20);
+	addEdge(0, 3, 40);
 	// addEdge(2, 5, 10);
-	addEdge(3, 4, 40);
-	addEdge(4, 5, 50);
+	addEdge(3, 4, 20);
+	addEdge(4, 5, 10);
 	addEdge(4, 6, 60);
-	addEdge(5, 6, 70);
+	addEdge(5, 6, 10);
 
-	/*   printGraph( 5); 
+/*   printGraph( 5); 
     
     cout<<"\nBreadth first traversal : \n ";
     memset(visited,0,sizeof(visited));
@@ -450,9 +503,17 @@ int main()
 	else 
 		cout<<"Graph is not bipartite \n";
 
+
+
+	// spread of disease
+	cout<<"No. of effected persons are : "<<countPatients(6,n,3);
+
 */
 
-cout<<"No. of effected persons are : "<<countPatients(6,n,3);
+cout<<"Prim's algo :\n";
+memset(visited,0,sizeof(visited));
+primsAlgo(0,n);
+
 
 	cout << '\n'
 		 << '\n'
