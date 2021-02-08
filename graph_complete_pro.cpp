@@ -19,7 +19,7 @@
 11. Is Bipartite graph or not 
 12. Spread of diseases at time t by pepcode
 13. Prim's algo to give minimum no. of wires or cables to setup a lan  so that each pc would connect to other 
-
+14  Topological sort and Order of work (only applicable in DAC Directed Acyclic Graph)
 
 
 */
@@ -40,7 +40,7 @@ int visited[MAX];
 void addEdge(int u, int v, int wt)
 {
 	adj[u].push_back(make_pair(v, wt));
-	adj[v].push_back(make_pair(u, wt));
+	// adj[v].push_back(make_pair(u, wt));    //comment it out for directed graph i did in topological sort 
 }
 
 //2
@@ -431,6 +431,21 @@ void primsAlgo(int src, int n)
 }
 
 
+// 14
+// Topological sort 
+// pura dfs hai sirf stack me add kar rahe hai 
+void topologicalSort(int src , stack<int> &stk)
+{
+	visited[src]=1;
+	for(auto x:adj[src])
+	{
+		if(visited[x.first]==0)
+		{
+			topologicalSort(x.first , stk);
+		}
+	}
+	stk.push(src);
+}
 
 
 
@@ -442,12 +457,12 @@ int main()
 	int edges = 8;
 	int n = vertices + 1;
 
-	addEdge(0, 1, 100);
+	addEdge(0, 1, 10);
 	addEdge(1, 2, 10);
 	addEdge(2, 3, 10);
 	addEdge(0, 3, 40);
 	// addEdge(2, 5, 10);
-	addEdge(3, 4, 20);
+	addEdge(4, 3, 20);
 	addEdge(4, 5, 10);
 	addEdge(4, 6, 60);
 	addEdge(5, 6, 10);
@@ -508,12 +523,46 @@ int main()
 	// spread of disease
 	cout<<"No. of effected persons are : "<<countPatients(6,n,3);
 
+
+	cout<<"Prim's algo :\n";
+	cout<<"from -> wt -> to \n";
+	memset(visited,0,sizeof(visited));
+	primsAlgo(0,n);
+
+
 */
 
-cout<<"Prim's algo :\n";
-cout<<"from -> wt -> to \n";
-memset(visited,0,sizeof(visited));
-primsAlgo(0,n);
+	cout<<"Topological sort : \n";
+	memset(visited,0,sizeof(visited));
+	stack<int> stk;
+	for(int i=0;i<n;i++)
+	{
+		if(visited[i]==0)
+		{
+			topologicalSort(i,stk);
+		}
+	}
+	vector<int> orderOfWork;
+	while(!stk.empty())
+	{
+		int t=stk.top();
+		stk.pop();
+		cout<<t<<" -> ";
+		orderOfWork.push_back(t);
+	}
+
+	// reverse of topological sort is order of work
+	cout<<"\n\nOrder of work  : \n";
+	vector<int>::iterator i;
+	for(i =orderOfWork.end()-1;i > orderOfWork.begin()-1;i--)
+	{
+		cout<<(*i)<<" -> ";
+	}
+
+
+
+
+
 
 
 	cout << '\n'
