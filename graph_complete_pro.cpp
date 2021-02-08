@@ -19,8 +19,8 @@
 11. Is Bipartite graph or not 
 12. Spread of diseases at time t by pepcode
 13. Prim's algo to give minimum no. of wires or cables to setup a lan  so that each pc would connect to other 
-14  Topological sort and Order of work (only applicable in DAC Directed Acyclic Graph)
-
+14. Topological sort and Order of work (only applicable in DAC Directed Acyclic Graph)
+15. Iterative dfs
 
 */
 
@@ -40,7 +40,7 @@ int visited[MAX];
 void addEdge(int u, int v, int wt)
 {
 	adj[u].push_back(make_pair(v, wt));
-	// adj[v].push_back(make_pair(u, wt));    //comment it out for directed graph i did in topological sort 
+	adj[v].push_back(make_pair(u, wt));    //comment it out for directed graph i did in topological sort 
 }
 
 //2
@@ -448,6 +448,36 @@ void topologicalSort(int src , stack<int> &stk)
 }
 
 
+// 15 
+// Iterative dfs 
+// key point->  instead of sibling in bfs here we explore its child first 
+void iterativeDfs(int src)
+{
+	stack<int> stk;
+	stk.push(src);
+	visited[src]=1;
+	cout<<src<<" -> ";
+
+	while(!stk.empty())
+	{
+		int t = stk.top();
+		stk.pop();
+
+		if(visited[t]==0)
+		{
+			visited[t]=1;
+			cout<<t<<" -> ";
+		}
+		for(auto x:adj[t])
+		{
+			if(visited[x.first]==0)
+			{
+				stk.push(x.first);
+			}
+		}
+	}
+}
+
 
 
 // Driver code
@@ -530,7 +560,6 @@ int main()
 	primsAlgo(0,n);
 
 
-*/
 
 	cout<<"Topological sort : \n";
 	memset(visited,0,sizeof(visited));
@@ -559,8 +588,13 @@ int main()
 		cout<<(*i)<<" -> ";
 	}
 
+*/
 
 
+// Iterative dfs
+cout<<"Iterative dfs : \n";
+memset(visited,0,sizeof(visited)); 
+iterativeDfs(0);
 
 
 
