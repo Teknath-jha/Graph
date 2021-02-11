@@ -21,6 +21,7 @@
 13. Prim's algo to give minimum no. of wires or cables to setup a lan  so that each pc would connect to other 
 14. Topological sort and Order of work (only applicable in DAC Directed Acyclic Graph)
 15. Iterative dfs
+16. Graph coloring (BFS) no adjacent vertices have same color
 
 */
 
@@ -479,6 +480,51 @@ void iterativeDfs(int src)
 }
 
 
+// 16
+// Graph coloring (BFS) no adjacent vertices have same color
+void graphColoring(int src , int n)
+{
+	int color[n];
+	memset(color,-1,sizeof(color));
+
+	queue<int> q;
+	q.push(src);
+	color[src]=0;  //source colored with 0
+
+
+	while(!q.empty())
+	{
+		int t=q.front();
+		q.pop();
+
+		if(visited[t]==0)
+		{
+			visited[t]=1;
+		}
+
+		for(auto x:adj[t])
+		{
+			if(visited[x.first]==0 && color[x.first]==-1)
+			{
+				color[x.first]=1-color[t];
+				q.push(x.first);
+			}
+			if(visited[x.first]==1 && color[x.first]== color[t])
+			{
+				color[x.first]=1+color[t];
+				q.push(x.first);
+			}
+		}
+	}
+	cout<<"Different colors are as follow in graph coloring : \n";
+	for(int i=0;i<n;i++)
+	{
+		cout<<"At "<<i<<"th vertex ,  color "<<color[i]<<'\n';
+	}
+}
+
+
+
 
 // Driver code
 int main()
@@ -588,15 +634,17 @@ int main()
 		cout<<(*i)<<" -> ";
 	}
 
+
+	// Iterative dfs
+	cout<<"Iterative dfs : \n";
+	memset(visited,0,sizeof(visited)); 
+	iterativeDfs(0);
+
 */
 
-
-// Iterative dfs
-cout<<"Iterative dfs : \n";
-memset(visited,0,sizeof(visited)); 
-iterativeDfs(0);
-
-
+// Graph coloring 
+memset(visited,0,sizeof(visited));
+graphColoring(0,n);
 
 
 	cout << '\n'
