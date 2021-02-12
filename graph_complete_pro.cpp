@@ -525,7 +525,6 @@ void graphColoring(int src , int n)
 
 
 
-
 // Driver code
 int main()
 {
